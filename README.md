@@ -1,4 +1,4 @@
-# generator-postcss-plugin [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+# generator-postcss-plugin [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url] [![Code Climate][codeclimate-image]][codeclimate-url]
 > An easy way to create a PostCSS plugin
 
 ## Installation
@@ -36,3 +36,5 @@ MIT © [dmarchena]()
 [daviddm-url]: https://david-dm.org/dmarchena/generator-postcss-plugin
 [coveralls-image]: https://coveralls.io/repos/dmarchena/generator-postcss-plugin/badge.svg
 [coveralls-url]: https://coveralls.io/r/dmarchena/generator-postcss-plugin
+[codeclimate-image]: https://codeclimate.com/github/dmarchena/generator-postcss-plugin/badges/gpa.svg
+[codeclimate-url]: https://codeclimate.com/github/dmarchena/generator-postcss-plugin

@@ -5,3 +5,6 @@ node_js:
   - v5
   - v4
   - '0.12'
+addons:
+    code_climate:
+        repo_token: 645a0616f4d33058a5728610109cb37dd90c1f39fd5dbe4cb0012b77dc77979b
