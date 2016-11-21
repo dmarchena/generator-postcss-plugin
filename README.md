@@ -1,6 +1,7 @@
 # generator-postcss-plugin 
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url] [![Code Climate][codeclimate-image]][codeclimate-url] ![Required node version][node-image]
+[![Build Status][travis-image]][travis-url] [![Coverage percentage][coveralls-image]][coveralls-url] [![Code Climate][codeclimate-image]][codeclimate-url] ![Required node version][node-image] [![NPM version][npm-image]][npm-url] [![Dependency Status][daviddm-image]][daviddm-url]
+
 > An easy way to create a PostCSS plugin
 
 ## Installation

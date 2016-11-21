@@ -4,6 +4,14 @@ node_js:
   - v6
   - v5
   - v4
-addons:
-    code_climate:
-        repo_token: 645a0616f4d33058a5728610109cb37dd90c1f39fd5dbe4cb0012b77dc77979b
+
+cache:
+  directories:
+    - node_modules
+
+before_install:
+  - npm i nsp -g
+
+after_script:
+  - nsp audit-package
+  - npm run coverage

@@ -1,0 +1,11 @@
+.babelrc
+.editorconfig
+.eslintrc
+.gitignore
+.travis.yml
+.yo-rc.json
+src/
+test/
+coverage/
+.nyc_output
+npm-debug.log
