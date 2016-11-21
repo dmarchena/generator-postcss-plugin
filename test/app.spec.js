@@ -1,8 +1,8 @@
+import 'babel-polyfill';
 import path from 'path';
 import assert from 'yeoman-assert';
 import helpers from 'yeoman-test';
 import mockery from 'mockery';
-import Promise from 'pinkie-promise';
 
 describe('generator-postcss-plugin:app', () => {
   before(() => {
