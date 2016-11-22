@@ -22,7 +22,7 @@ describe('generator-postcss-plugin:app', () => {
 
   describe('defaults', () => {
     before(() => {
-      return helpers.run(path.join(__dirname, '../src/generators/app'))
+      return helpers.run(path.join(__dirname, '../generators/app'))
         .withPrompts({
           name: 'plugin-boilerplate',
           description: 'PostCSS plugin boilerplate generated with generator-postcss-plugin',

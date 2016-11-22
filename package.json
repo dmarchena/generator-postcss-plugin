@@ -1,6 +1,6 @@
 {
   "name": "generator-postcss-plugin",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "An easy way to create a PostCSS plugin",
   "homepage": "",
   "author": {
@@ -20,14 +20,16 @@
     "yeoman-generator"
   ],
   "scripts": {
+    "prebuild": "rimraf ./generators",
+    "build": "babel --out-dir ./generators --copy-files ./src/generators",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint --ignore-pattern **/templates ./test/**/*.js ./src/**/*.js",
-    "postversion": "git push && git push --tags && npm publish --access public",
     "release:patch": "npm test && npm run build && npm version patch",
     "release:minor": "npm test && npm run build && npm version minor",
     "release:major": "npm test && npm run build && npm version major",
     "release:quick": "npm test && npm run build && git add -A && git commit -m 'Quick release patch' && npm version patch",
-    "test": "npm run lint && cross-env NODE_ENV=test nyc mocha test/**/*.spec.js"
+    "postversion": "git push && git push --tags && npm publish --access public",
+    "test": "npm run lint && npm run build && cross-env NODE_ENV=test nyc mocha test/**/*.spec.js"
   },
   "repository": "dmarchena/generator-postcss-plugin",
   "license": "MIT",
@@ -43,7 +45,7 @@
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-plugin-istanbul": "^3.0.0",
-    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-es2015-node4": "^2.1.0",
     "babel-register": "^6.18.0",
     "cross-env": "^3.1.3",
     "eslint": "^3.1.1",
@@ -52,6 +54,7 @@
     "mockery": "^2.0.0",
     "nyc": "^9.0.1",
     "pinkie-promise": "^2.0.1",
+    "rimraf": "^2.5.4",
     "yeoman-assert": "^2.0.0",
     "yeoman-test": "^1.0.0"
   },
@@ -75,7 +78,7 @@
   },
   "babel": {
     "presets": [
-      "es2015"
+      "es2015-node4"
     ],
     "env": {
       "test": {

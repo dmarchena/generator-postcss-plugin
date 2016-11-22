@@ -71,9 +71,6 @@ module.exports = yeoman.Base.extend({
       });
   },
 
-  promptingOpts() {
-  },
-
   makingPluginDir() {
     if (path.basename(this.destinationPath()) !== this.props.name) {
       this.log(
