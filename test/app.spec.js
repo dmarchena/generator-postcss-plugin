@@ -1,8 +1,8 @@
-import 'babel-polyfill';
 import path from 'path';
 import assert from 'yeoman-assert';
 import helpers from 'yeoman-test';
 import mockery from 'mockery';
+import Promise from 'pinkie-promise';
 
 describe('generator-postcss-plugin:app', () => {
   before(() => {
@@ -24,7 +24,9 @@ describe('generator-postcss-plugin:app', () => {
     before(() => {
       return helpers.run(path.join(__dirname, '../src/generators/app'))
         .withPrompts({
-          name: 'plugin-boilerplate'
+          name: 'plugin-boilerplate',
+          description: 'PostCSS plugin boilerplate generated with generator-postcss-plugin',
+          githubName: 'Mocha'
         })
         .toPromise();
     });
@@ -38,6 +40,15 @@ describe('generator-postcss-plugin:app', () => {
         '.editorconfig',
         'package.json'
       ]);
+    });
+
+    it('fills package.json with correct information', () => {
+      // eslint-disable-next-line new-cap
+      assert.JSONFileContent('package.json', {
+        name: 'postcss-plugin-boilerplate',
+        description: 'PostCSS plugin boilerplate generated with generator-postcss-plugin',
+        author: 'Mocha'
+      });
     });
   });
 });

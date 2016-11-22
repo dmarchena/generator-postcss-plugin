@@ -20,7 +20,7 @@
     "!**/__tests__"
   ],
   "dependencies": {
-    "postcss": "^5.2.0",
+    "postcss": "^5.2.0"
   },
   "devDependencies": {
     "ava": "^0.16.0",
