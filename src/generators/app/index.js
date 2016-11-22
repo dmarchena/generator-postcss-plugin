@@ -1,12 +1,14 @@
 import askName from 'inquirer-npm-name';
 import chalk from 'chalk';
+import gitConfig from 'git-config';
 import mkdirp from 'mkdirp';
 import path from 'path';
-import yeoman from 'yeoman-generator';
+import {Base} from 'yeoman-generator';
 import yosay from 'yosay';
 import _ from 'lodash';
 
 const files = [
+  'editorconfig',
   '_package.json'
 ];
 
@@ -16,92 +18,103 @@ function makePluginName(name) {
   return name;
 }
 
-function required(type) {
-  return function (value) {
-    return value.length ? true : 'You must provide a ' + type + '!';
-  };
-}
+class PostcssPluginApp extends Base {
 
-module.exports = yeoman.Base.extend({
+  constructor(...args) {
+    super(...args);
+
+    this.option('pluginName', {
+      type: String,
+      desc: 'Your PostCSS plugin name',
+      default: makePluginName(path.basename(process.cwd()))
+    });
+
+    this.option('pluginDescription', {
+      type: String,
+      desc: 'Plugin description',
+      default: 'PostCSS plugin generated with generator-postcss-plugin'
+    });
+
+    this.option('author', {
+      type: String,
+      desc: 'Package Author'
+    });
+
+    this.option('email', {
+      type: String,
+      desc: 'Author\'s email'
+    });
+  }
+
   initializing() {
-    this.props = {};
-  },
+    this.githubConfig = gitConfig.sync();
+    this.githubConfig.user = this.githubConfig.user || {};
+  }
 
-  promptingName() {
+  prompting() {
     // Have Yeoman greet the user.
     this.log(yosay(
       'Welcome to the legendary ' + chalk.red('generator-postcss-plugin') + ' generator!'
     ));
 
     return askName({
-      name: 'name',
+      name: 'pluginName',
       message: 'Your PostCSS plugin name',
-      default: makePluginName(path.basename(process.cwd())),
+      filter: makePluginName,
+      default: this.options.pluginName,
       validate(str) {
         return str.length > 'postcss-'.length;
       }
     }, this)
-      .then(props => {
-        this.props.name = makePluginName(props.name);
+      .then(answers => {
+        this.config.set('pluginName', makePluginName(answers.pluginName));
       })
       .then(() => this.prompt(
         [{
-          name: 'description',
+          name: 'pluginDescription',
           message: 'Plugin description:',
-          default: 'PostCSS plugin generated with generator-postcss-plugin'
+          default: this.options.pluginDescription
         }, {
-          name: 'githubName',
+          name: 'author',
           message: 'GitHub username:',
-          store: true,
-          validate: required('GitHub username')
+          default: this.options.author || this.githubConfig.user.name,
+          store: true
+        }, {
+          name: 'email',
+          message: 'Email:',
+          default: this.options.email || this.githubConfig.user.email,
+          store: true
         }, {
           name: 'authorUrl',
           message: 'Your homepage:',
-          store: true,
-          default: props => {
-            return 'https://github.com/' +
-              props.githubName + '/' +
-              props.pluginName;
-          }
+          default: answers => 'https://github.com/' +
+            answers.author + '/' +
+            this.config.get('pluginName')
         }]
       ))
-      .then(props => {
-        props.author = props.githubName;
-        Object.assign(this.props, props);
+      .then(answers => {
+        this.config.set(answers);
       });
-  },
+  }
 
-  makingPluginDir() {
-    if (path.basename(this.destinationPath()) !== this.props.name) {
-      this.log(
-        'Your generator must be inside a folder named ' + this.props.name + '\n' +
-        'I\'ll automatically create this folder.'
-      );
-      mkdirp(this.props.name);
-      this.destinationRoot(this.destinationPath(this.props.name));
-    }
-  },
-
-  composing() {
-    this.composeWith('postcss-plugin:editorconfig', {
-      indentation: 's',
-      size: 2
-    }, {
-      local: require.resolve('generator-editorconfig')
-    });
-  },
+  configuring() {
+    this.config.save();
+  }
 
   writing() {
     files.map(file => {
       const destFile = (file.charAt(0) === '_')
         ? file.substring(1)
         : '.' + file;
-      this.template(file, destFile, this.props);
+      this.template(file, destFile, this.config.getAll());
       return destFile;
     });
-  },
+  }
 
   install() {
     this.installDependencies();
   }
-});
+
+}
+
+module.exports = PostcssPluginApp;

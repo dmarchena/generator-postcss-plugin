@@ -3,6 +3,7 @@ import assert from 'yeoman-assert';
 import helpers from 'yeoman-test';
 import mockery from 'mockery';
 import Promise from 'pinkie-promise';
+import {app as generator} from './config';
 
 describe('generator-postcss-plugin:app', () => {
   before(() => {
@@ -22,22 +23,18 @@ describe('generator-postcss-plugin:app', () => {
 
   describe('defaults', () => {
     before(() => {
-      return helpers.run(path.join(__dirname, '../generators/app'))
-        .withPrompts({
-          name: 'plugin-boilerplate',
-          description: 'PostCSS plugin boilerplate generated with generator-postcss-plugin',
-          githubName: 'Mocha'
-        })
+      return helpers.run(path.join(__dirname, generator.src))
+        .withPrompts(generator.prompts)
+        .withOptions(generator.options)
         .toPromise();
     });
 
-    it('created and CD into a folder named like the plugin', () => {
+    /* it('created and CD into a folder named like the plugin', () => {
       assert.equal(path.basename(process.cwd()), 'postcss-plugin-boilerplate');
-    });
+    }); */
 
     it('creates files', () => {
       assert.file([
-        '.editorconfig',
         'package.json'
       ]);
     });
