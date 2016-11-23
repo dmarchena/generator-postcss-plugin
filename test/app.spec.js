@@ -33,9 +33,28 @@ describe('generator-postcss-plugin:app', () => {
       assert.equal(path.basename(process.cwd()), 'postcss-plugin-boilerplate');
     }); */
 
-    it('creates files', () => {
+    it('creates project files', () => {
       assert.file([
-        'package.json'
+        'package.json',
+        '.editorconfig',
+        '.gitignore',
+        '.npmignore',
+        '.travis.yml'
+      ]);
+    });
+
+    it('creates src files', () => {
+      assert.file([
+        'src/index.js'
+      ]);
+    });
+
+    it('creates test files', () => {
+      assert.file([
+        'test/index.js',
+        'test/lib/testFixture.js',
+        'test/fixtures/sample.css',
+        'test/fixtures/sample.expected.css'
       ]);
     });
 

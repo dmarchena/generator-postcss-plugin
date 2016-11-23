@@ -8,15 +8,15 @@
     "css"
   ],
   "author": "<%= author %>",
-  "repository": "dmarchena/postcss-color-hsl",
+  "repository": "<%= author %>/<%= pluginName %>",
   "bugs": {
-    "url": "https://github.com/dmarchena/postcss-color-hsl/issues"
+    "url": "https://github.com/<%= author %>/<%= pluginName %>/issues"
   },
-  "homepage": "https://github.com/dmarchena/postcss-color-hsl",
+  "homepage": "https://github.com/<%= author %>/<%= pluginName %>",
   "main": "lib/index.js",
   "files": [
     "lib",
-    "!**/__tests__"
+    "!test"
   ],
   "dependencies": {
     "postcss": "^5.2.0"
@@ -35,14 +35,15 @@
     "rimraf": "^2.5.4"
   },
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf lib",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint src/**/*.js",
     "pretest": "npm run lint",
     "test:ava": "ava",
     "test": "nyc npm run test:ava",
     "prebuild": "npm-run-all clean lint",
-    "build": "babel src --out-dir dist"
+    "build": "babel src --out-dir lib",
+    "prepublish": "npm run build"
   },
   "babel": {
     "presets": [
@@ -54,7 +55,7 @@
   },
   "ava": {
     "files": [
-      "src/__tests__/*.js"
+      "test/index.js"
     ],
     "require": [
       "babel-register"

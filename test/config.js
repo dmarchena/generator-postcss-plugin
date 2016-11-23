@@ -16,6 +16,7 @@ export const license = {
     license: 'MIT'
   },
   options: {
-    owner: 'Mystery Man'
+    owner: 'Mystery Man',
+    program: 'Mystery Program'
   }
 };

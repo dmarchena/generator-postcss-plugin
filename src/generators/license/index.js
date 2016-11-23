@@ -1,26 +1,29 @@
 import {Base} from 'yeoman-generator';
 
 const licenses = [{
-  name: 'Apache 2.0',
-  value: 'Apache-2.0'
-}, {
-  name: 'FreeBSD',
-  value: 'BSD-2-Clause-FreeBSD'
-}, {
-  name: 'Internet Systems Consortium (ISC)',
-  value: 'ISC'
-}, {
   name: 'MIT',
   value: 'MIT'
 }, {
-  name: 'NewBSD',
+  name: 'Apache 2.0',
+  value: 'Apache-2.0'
+}, {
+  name: 'GNU General Public License v3.0',
+  value: 'GNU-GPLv3'
+}, {
+  name: 'BSD 2-clause "Simplified" License',
+  value: 'BSD-2-Clause'
+}, {
+  name: 'BSD 3-clause "New" or "Revised" License',
   value: 'BSD-3-Clause'
 }, {
-  name: 'No License (Copyrighted)',
-  value: 'nolicense'
+  name: 'ISC',
+  value: 'ISC'
 }, {
   name: 'Unlicense',
   value: 'unlicense'
+}, {
+  name: 'None (Copyrighted)',
+  value: 'nolicense'
 }];
 
 class PostcssPluginLicense extends Base {
@@ -30,6 +33,10 @@ class PostcssPluginLicense extends Base {
 
     this.option('owner', {
       desc: 'Name of the license owner'
+    });
+
+    this.option('program', {
+      desc: 'Name of the licensed program'
     });
 
     this.option('year', {
@@ -61,31 +68,47 @@ class PostcssPluginLicense extends Base {
   }
 
   configuring() {
-    const owner = this.options.owner || this.config.get('author');
-    this.config.set('owner', owner);
+    const licenseOwner = this.options.owner || this.config.get('author');
+    const licenseProgram = this.options.program || this.config.get('pluginName');
+    this.config.set('licenseOwner', licenseOwner);
+    this.config.set('licenseProgram', licenseProgram);
   }
 
   writing() {
     // License file
     const config = this.config.getAll();
-    const filename = config.license + '.txt';
-    const owner = config.owner.trim();
+    const licenseFile = config.license + '.txt';
+    const noticeFile = config.license + '.notice.txt';
+    const licenseOwner = config.licenseOwner.trim();
+    const licenseProgram = config.licenseProgram.trim();
 
     this.fs.copyTpl(
-      this.templatePath(filename),
+      this.templatePath(licenseFile),
       this.destinationPath('LICENSE'),
       {
         year: this.options.year,
-        author: owner
+        author: licenseOwner
       }
     );
+
+    // Notice
+    if (this.fs.exists(this.templatePath(noticeFile))) {  
+      this.fs.copyTpl(
+        this.templatePath(noticeFile),
+        this.destinationPath('NOTICE'),
+        {
+          year: this.options.year,
+          author: licenseOwner,
+          program: licenseProgram
+        }
+      );
+    }
 
     // Package.json
     const pkg = this.fs.readJSON(this.destinationPath('package.json'), {});
     pkg.license = config.license;
 
-    // We don't want users to publish their module to NPM if they copyrighted
-    // their content.
+    // Avoid publishing the module to NPM if its copyrighted
     if (config.license === 'nolicense') {
       delete pkg.license;
       pkg.private = true;

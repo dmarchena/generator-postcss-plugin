@@ -29,8 +29,35 @@ describe('generator-postcss-plugin:license', () => {
     it('fills LICENSE with correct information', () => {
       const owner = generator.options.owner;
       const year = (new Date()).getFullYear();
-      assert.fileContent('LICENSE', 'The MIT License (MIT)');
+      assert.fileContent('LICENSE', 'MIT License');
       assert.fileContent('LICENSE', 'Copyright (c) ' + year + ' ' + owner);
+    });
+  });
+
+  describe('GNU-GPLv3', () => {
+    before(() => {
+      return helpers.run(path.join(__dirname, generator.src))
+        .withPrompts(Object.assign({}, generator.prompts, {
+          license: 'GNU-GPLv3'
+        }))
+        .withOptions(generator.options)
+        .toPromise();
+    });
+
+    it('creates files', () => {
+      assert.file([
+        'LICENSE',
+        'NOTICE',
+        'package.json'
+      ]);
+    });
+
+    it('fills LICENSE with correct information', () => {
+      const owner = generator.options.owner;
+      const year = (new Date()).getFullYear();
+      assert.fileContent('LICENSE', 'GNU GENERAL PUBLIC LICENSE');
+      assert.fileContent('NOTICE', generator.options.program);
+      assert.fileContent('NOTICE', 'Copyright (C) ' + year + '  ' + owner);
     });
   });
 

@@ -8,8 +8,11 @@ import yosay from 'yosay';
 import _ from 'lodash';
 
 const files = [
+  '_package.json',
   'editorconfig',
-  '_package.json'
+  'gitignore',
+  'npmignore',
+  'travis.yml'
 ];
 
 function makePluginName(name) {
@@ -102,13 +105,24 @@ class PostcssPluginApp extends Base {
   }
 
   writing() {
+    const config = this.config.getAll();
+    // Project files
     files.map(file => {
       const destFile = (file.charAt(0) === '_')
         ? file.substring(1)
         : '.' + file;
-      this.template(file, destFile, this.config.getAll());
+      this.template(file, destFile, config);
       return destFile;
     });
+
+    // Src files
+    this.template('src/index.js', 'src/index.js', config);
+
+    // Test files
+    this.fs.copy(
+      this.templatePath('test'),
+      this.destinationPath('test')
+    );
   }
 
   install() {
