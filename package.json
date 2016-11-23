@@ -20,7 +20,7 @@
     "yeoman-generator"
   ],
   "scripts": {
-    "prebuild": "rimraf ./generators",
+    "prebuild": "rm -rf ./generators",
     "build": "babel --out-dir ./generators --copy-files ./src/generators",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint --ignore-pattern **/templates ./test/**/*.js ./src/**/*.js",
@@ -29,7 +29,7 @@
     "release:major": "npm test && npm run build && npm version major",
     "release:quick": "npm test && npm run build && git add -A && git commit -m 'Quick release patch' && npm version patch",
     "postversion": "git push && git push --tags && npm publish --access public",
-    "test": "npm run lint && npm run build && cross-env NODE_ENV=test nyc mocha test/**/*.spec.js"
+    "test": "npm run lint && npm run build && cross-env NODE_ENV=test nyc mocha --harmony test/**/*.spec.js"
   },
   "repository": "dmarchena/generator-postcss-plugin",
   "license": "MIT",
@@ -46,7 +46,6 @@
     "babel-cli": "^6.18.0",
     "babel-eslint": "^7.1.1",
     "babel-plugin-istanbul": "^3.0.0",
-    "babel-plugin-transform-export-extensions": "^6.8.0",
     "babel-preset-es2015-node4": "^2.1.0",
     "babel-register": "^6.18.0",
     "cross-env": "^3.1.3",
@@ -85,9 +84,6 @@
   "babel": {
     "presets": [
       "es2015-node4"
-    ],
-    "plugins": [
-      "transform-export-extensions"
     ],
     "ignore": [
       "**/templates/**/*"
