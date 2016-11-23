@@ -26,10 +26,9 @@ const licenses = [{
   value: 'nolicense'
 }];
 
-class PostcssPluginLicense extends Base {
-
-  constructor(...args) {
-    super(...args);
+module.exports = Base.extend({
+  constructor() {
+    Base.apply(this, arguments);
 
     this.option('owner', {
       desc: 'Name of the license owner'
@@ -48,7 +47,7 @@ class PostcssPluginLicense extends Base {
       desc: 'License',
       default: 'MIT'
     });
-  }
+  },
 
   prompting() {
     const prompts = [
@@ -65,14 +64,14 @@ class PostcssPluginLicense extends Base {
       answers = Object.assign({}, this.options, answers);
       this.config.set(answers);
     });
-  }
+  },
 
   configuring() {
     const licenseOwner = this.options.owner || this.config.get('author');
     const licenseProgram = this.options.program || this.config.get('pluginName');
     this.config.set('licenseOwner', licenseOwner);
     this.config.set('licenseProgram', licenseProgram);
-  }
+  },
 
   writing() {
     // License file
@@ -116,6 +115,4 @@ class PostcssPluginLicense extends Base {
 
     this.fs.writeJSON(this.destinationPath('package.json'), pkg);
   }
-}
-
-module.exports = PostcssPluginLicense;
+});

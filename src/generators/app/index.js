@@ -21,10 +21,9 @@ function makePluginName(name) {
   return name;
 }
 
-class PostcssPluginApp extends Base {
-
-  constructor(...args) {
-    super(...args);
+module.exports = Base.extend({
+  constructor() {
+    Base.apply(this, arguments);
 
     this.option('pluginName', {
       type: String,
@@ -47,12 +46,12 @@ class PostcssPluginApp extends Base {
       type: String,
       desc: 'Author\'s email'
     });
-  }
+  },
 
   initializing() {
     this.githubConfig = gitConfig.sync();
     this.githubConfig.user = this.githubConfig.user || {};
-  }
+  },
 
   prompting() {
     // Have Yeoman greet the user.
@@ -98,11 +97,11 @@ class PostcssPluginApp extends Base {
       .then(answers => {
         this.config.set(answers);
       });
-  }
+  },
 
   configuring() {
     this.config.save();
-  }
+  },
 
   writing() {
     const config = this.config.getAll();
@@ -123,12 +122,10 @@ class PostcssPluginApp extends Base {
       this.templatePath('test'),
       this.destinationPath('test')
     );
-  }
+  },
 
   install() {
     this.installDependencies();
   }
 
-}
-
-module.exports = PostcssPluginApp;
+});
