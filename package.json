@@ -1,6 +1,6 @@
 {
   "name": "generator-postcss-plugin",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "An easy way to create a PostCSS plugin",
   "homepage": "",
   "author": {
