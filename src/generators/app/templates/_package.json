@@ -46,6 +46,6 @@
     "release:quick": "npm test && npm run build && git add -A && git commit -m 'Quick release patch' && npm version patch",
     "postversion": "git push && git push --tags && npm publish --access public",
     "pretest": "rimraf coverage",
-    "test": "npm lint && npm run build && jest --coverage"
+    "test": "npm run lint && npm run build && jest --coverage"
   }
 }
