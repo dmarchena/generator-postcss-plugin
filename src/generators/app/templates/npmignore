@@ -2,10 +2,12 @@
 .editorconfig
 .eslintrc
 .gitignore
+.jestrc
+.nyc_output
 .travis.yml
 .yo-rc.json
+__tests__/
 src/
 test/
 coverage/
-.nyc_output
 npm-debug.log

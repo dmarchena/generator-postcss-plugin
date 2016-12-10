@@ -36,8 +36,11 @@ describe('generator-postcss-plugin:app', () => {
     it('creates project files', () => {
       assert.file([
         'package.json',
+        '.babelrc',
         '.editorconfig',
+        '.eslintrc',
         '.gitignore',
+        '.jestrc',
         '.npmignore',
         '.travis.yml'
       ]);
@@ -51,10 +54,9 @@ describe('generator-postcss-plugin:app', () => {
 
     it('creates test files', () => {
       assert.file([
-        'test/index.js',
-        'test/lib/testFixture.js',
-        'test/fixtures/sample.css',
-        'test/fixtures/sample.expected.css'
+        '__tests__/fixtures.js',
+        '__tests__/fixtures/sample.css',
+        '__tests__/fixtures/sample.expected.css'
       ]);
     });
 

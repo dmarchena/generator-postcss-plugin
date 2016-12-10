@@ -55,7 +55,7 @@ module.exports = Base.extend({
         type: 'list',
         name: 'license',
         message: 'Which license do you want to use?',
-        default: 3,
+        default: 0,
         choices: licenses
       }
     ];

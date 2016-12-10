@@ -9,8 +9,11 @@ import _ from 'lodash';
 
 const files = [
   '_package.json',
+  'babelrc',
   'editorconfig',
+  'eslintrc',
   'gitignore',
+  'jestrc',
   'npmignore',
   'travis.yml'
 ];
@@ -119,8 +122,8 @@ module.exports = Base.extend({
 
     // Test files
     this.fs.copy(
-      this.templatePath('test'),
-      this.destinationPath('test')
+      this.templatePath('__tests__'),
+      this.destinationPath('__tests__')
     );
   },
 
