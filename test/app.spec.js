@@ -36,6 +36,7 @@ describe('generator-postcss-plugin:app', () => {
     it('creates project files', () => {
       assert.file([
         'package.json',
+        'README.md',
         '.babelrc',
         '.editorconfig',
         '.eslintrc',

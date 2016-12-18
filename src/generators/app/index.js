@@ -9,6 +9,7 @@ import _ from 'lodash';
 
 const files = [
   '_package.json',
+  '_README.md',
   'babelrc',
   'editorconfig',
   'eslintrc',
