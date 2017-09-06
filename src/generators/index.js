@@ -1,9 +1,8 @@
 import mkdirp from 'mkdirp';
 import path from 'path';
-import {Base} from 'yeoman-generator';
+import Generator from 'yeoman-generator';
 
-class PostcssPluginGenerator extends Base {
-
+module.exports = class PostcssPluginGenerator extends Generator {
   initializing() {
     this.composeWith('postcss-plugin:app');
     this.composeWith('postcss-plugin:license');
@@ -16,15 +15,20 @@ class PostcssPluginGenerator extends Base {
         'Your generator must be inside a folder named ' + config.pluginName + '\n' +
         'I\'ll automatically create this folder.'
       );
-      mkdirp(config.pluginName);
-      this.destinationRoot(this.destinationPath(config.pluginName));
+      mkdirp(config.pluginName, err => {
+        if (err) {
+          console.error(err);
+        } else {
+          this.destinationRoot(this.destinationPath(config.pluginName));
+        }
+      });
     }
   }
 
   install() {
-    this.installDependencies();
+    this.installDependencies({
+      npm: true,
+      bower: false
+    });
   }
-
-}
-
-module.exports = PostcssPluginGenerator;
+};

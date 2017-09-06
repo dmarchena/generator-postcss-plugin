@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import gitConfig from 'git-config';
 import mkdirp from 'mkdirp';
 import path from 'path';
-import {Base} from 'yeoman-generator';
+import Generator from 'yeoman-generator';
 import yosay from 'yosay';
 import _ from 'lodash';
 
@@ -25,9 +25,9 @@ function makePluginName(name) {
   return name;
 }
 
-module.exports = Base.extend({
-  constructor() {
-    Base.apply(this, arguments);
+module.exports = class extends Generator {
+  constructor(args, opts) {
+    super(args, opts);
 
     this.option('pluginName', {
       type: String,
@@ -50,12 +50,12 @@ module.exports = Base.extend({
       type: String,
       desc: 'Author\'s email'
     });
-  },
+  }
 
   initializing() {
     this.githubConfig = gitConfig.sync();
     this.githubConfig.user = this.githubConfig.user || {};
-  },
+  }
 
   prompting() {
     // Have Yeoman greet the user.
@@ -65,12 +65,9 @@ module.exports = Base.extend({
 
     return askName({
       name: 'pluginName',
-      message: 'Your PostCSS plugin name',
+      message: 'Your PostCSS plugin name ("postcss-" prefix will be added if omited)',
       filter: makePluginName,
-      default: this.options.pluginName,
-      validate(str) {
-        return str.length > 'postcss-'.length;
-      }
+      default: this.options.pluginName
     }, this)
       .then(answers => {
         this.config.set('pluginName', makePluginName(answers.pluginName));
@@ -101,11 +98,11 @@ module.exports = Base.extend({
       .then(answers => {
         this.config.set(answers);
       });
-  },
+  }
 
   configuring() {
     this.config.save();
-  },
+  }
 
   writing() {
     const config = this.config.getAll();
@@ -114,22 +111,24 @@ module.exports = Base.extend({
       const destFile = (file.charAt(0) === '_')
         ? file.substring(1)
         : '.' + file;
-      this.template(file, destFile, config);
+      this.fs.copyTpl(
+        this.templatePath(file),
+        this.destinationPath(destFile),
+        config);
       return destFile;
     });
 
     // Src files
-    this.template('src/index.js', 'src/index.js', config);
+    this.fs.copyTpl(
+      this.templatePath('src/index.js'),
+      this.destinationPath('src/index.js'),
+      config);
 
     // Test files
     this.fs.copy(
       this.templatePath('__tests__'),
       this.destinationPath('__tests__')
     );
-  },
-
-  install() {
-    this.installDependencies();
   }
 
-});
+};

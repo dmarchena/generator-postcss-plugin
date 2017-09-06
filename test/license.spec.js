@@ -7,8 +7,8 @@ describe('generator-postcss-plugin:license', () => {
   describe('MIT (default)', () => {
     before(() => {
       return helpers.run(path.join(__dirname, generator.src))
-        .withPrompts(generator.prompts)
         .withOptions(generator.options)
+        .withPrompts(generator.prompts)
         .toPromise();
     });
 
@@ -27,7 +27,7 @@ describe('generator-postcss-plugin:license', () => {
     });
 
     it('fills LICENSE with correct information', () => {
-      const owner = generator.options.owner;
+      const owner = generator.prompts.author;
       const year = (new Date()).getFullYear();
       assert.fileContent('LICENSE', 'MIT License');
       assert.fileContent('LICENSE', 'Copyright (c) ' + year + ' ' + owner);
@@ -53,10 +53,10 @@ describe('generator-postcss-plugin:license', () => {
     });
 
     it('fills LICENSE with correct information', () => {
-      const owner = generator.options.owner;
+      const owner = generator.prompts.author;
       const year = (new Date()).getFullYear();
       assert.fileContent('LICENSE', 'GNU GENERAL PUBLIC LICENSE');
-      assert.fileContent('NOTICE', generator.options.program);
+      assert.fileContent('NOTICE', generator.prompts.pluginName);
       assert.fileContent('NOTICE', 'Copyright (C) ' + year + '  ' + owner);
     });
   });

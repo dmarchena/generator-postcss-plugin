@@ -13,10 +13,9 @@ export const app = {
 export const license = {
   src: basePath + 'license',
   prompts: {
-    license: 'MIT'
+    license: 'MIT',
+    author: 'Mystery Man',
+    pluginName: 'Mystery Program'
   },
-  options: {
-    owner: 'Mystery Man',
-    program: 'Mystery Program'
-  }
+  options: {}
 };

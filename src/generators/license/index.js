@@ -1,4 +1,4 @@
-import {Base} from 'yeoman-generator';
+import Generator from 'yeoman-generator';
 
 const licenses = [{
   name: 'MIT',
@@ -26,28 +26,10 @@ const licenses = [{
   value: 'nolicense'
 }];
 
-module.exports = Base.extend({
-  constructor() {
-    Base.apply(this, arguments);
-
-    this.option('owner', {
-      desc: 'Name of the license owner'
-    });
-
-    this.option('program', {
-      desc: 'Name of the licensed program'
-    });
-
-    this.option('year', {
-      desc: 'Year(s) to include on the license',
-      default: (new Date()).getFullYear()
-    });
-
-    this.option('license', {
-      desc: 'License',
-      default: 'MIT'
-    });
-  },
+module.exports = class extends Generator {
+  constructor(args, opts) {
+    super(args, opts);
+  }
 
   prompting() {
     const prompts = [
@@ -60,18 +42,36 @@ module.exports = Base.extend({
       }
     ];
 
+    if (!this.config.get('author')) {
+      prompts.push(
+        {
+          type: 'input',
+          name: 'author',
+          message: 'Name of the license owner:',
+        }
+      )
+    }
+
+    if (!this.config.get('pluginName')) {
+      prompts.push(
+        {
+          type: 'input',
+          name: 'pluginName',
+          message: 'Name of the licensed program:',
+        }
+      )
+    }
     return this.prompt(prompts).then(answers => {
-      answers = Object.assign({}, this.options, answers);
+      answers = Object.assign({}, this.config.getAll(), answers);
       this.config.set(answers);
     });
-  },
+  }
 
   configuring() {
-    const licenseOwner = this.options.owner || this.config.get('author');
-    const licenseProgram = this.options.program || this.config.get('pluginName');
-    this.config.set('licenseOwner', licenseOwner);
-    this.config.set('licenseProgram', licenseProgram);
-  },
+    this.config.set('licenseOwner', this.config.get('author'));
+    this.config.set('licenseProgram', this.config.get('pluginName'));
+    this.config.set('licenseYear', (new Date()).getFullYear());
+  }
 
   writing() {
     // License file
@@ -80,23 +80,24 @@ module.exports = Base.extend({
     const noticeFile = config.license + '.notice.txt';
     const licenseOwner = config.licenseOwner.trim();
     const licenseProgram = config.licenseProgram.trim();
+    const licenseYear = config.licenseYear;
 
     this.fs.copyTpl(
       this.templatePath(licenseFile),
       this.destinationPath('LICENSE'),
       {
-        year: this.options.year,
+        year: licenseYear,
         author: licenseOwner
       }
     );
 
     // Notice
-    if (this.fs.exists(this.templatePath(noticeFile))) {  
+    if (this.fs.exists(this.templatePath(noticeFile))) {
       this.fs.copyTpl(
         this.templatePath(noticeFile),
         this.destinationPath('NOTICE'),
         {
-          year: this.options.year,
+          year: licenseYear,
           author: licenseOwner,
           program: licenseProgram
         }
@@ -115,4 +116,4 @@ module.exports = Base.extend({
 
     this.fs.writeJSON(this.destinationPath('package.json'), pkg);
   }
-});
+};

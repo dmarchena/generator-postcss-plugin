@@ -24,12 +24,13 @@ describe('generator-postcss-plugin:app', () => {
   describe('defaults', () => {
     before(() => {
       return helpers.run(path.join(__dirname, generator.src))
-        .withPrompts(generator.prompts)
         .withOptions(generator.options)
+        .withPrompts(generator.prompts)
         .toPromise();
     });
 
-    /* it('created and CD into a folder named like the plugin', () => {
+    /* TO-DO
+    it('created and CD into a folder named like the plugin', () => {
       assert.equal(path.basename(process.cwd()), 'postcss-plugin-boilerplate');
     }); */
 
