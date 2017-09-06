@@ -65,7 +65,7 @@ module.exports = class extends Generator {
 
     return askName({
       name: 'pluginName',
-      message: 'Your PostCSS plugin name ("postcss-" prefix will be added if omited)',
+      message: 'Your PostCSS plugin name ("postcss-" prefix will be added if omitted)',
       filter: makePluginName,
       default: this.options.pluginName
     }, this)
@@ -129,6 +129,13 @@ module.exports = class extends Generator {
       this.templatePath('__tests__'),
       this.destinationPath('__tests__')
     );
+  }
+
+  install() {
+    this.installDependencies({
+      npm: true,
+      bower: false
+    });
   }
 
 };

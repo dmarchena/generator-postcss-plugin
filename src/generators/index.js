@@ -24,11 +24,4 @@ module.exports = class PostcssPluginGenerator extends Generator {
       });
     }
   }
-
-  install() {
-    this.installDependencies({
-      npm: true,
-      bower: false
-    });
-  }
 };
